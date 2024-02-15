@@ -13,9 +13,9 @@ import (
 )
 
 const (
-	url           = "https://pitprodstorage.blob.core.windows.net"
-	containerName = "logo"
-	blobName      = "politiet/60_sort.png"
+	url           = "https://anakinprodsademo.blob.core.windows.net"
+	containerName = "memes"
+	blobName      = "meme.jpg"
 	port          = ":8080"
 )
 
