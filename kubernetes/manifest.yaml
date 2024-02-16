@@ -38,7 +38,7 @@ spec:
         volumeMounts:
           - mountPath: /root/.mitmproxy
             name: shared-certificate
-      - image: ghcr.io/christiantryti/storage-test:main@sha256:d92dc8a5fe6f70600380b1e1e466e8658886c006a967d739513ed99a5659471c
+      - image: ghcr.io/christiantryti/storage-test:main@sha256:94f6a904d3e717fd097c5f8a49db6b75a4b2685cfc92a5fca699ada9d93677d0
         imagePullPolicy: Always
         name: storage-test
         ports:
@@ -70,7 +70,7 @@ kind: Service
 metadata:
   labels:
     app: storage-demo
-  name: mitmproxy
+  name: storage-demo
   namespace: demo
 spec:
   ports:
