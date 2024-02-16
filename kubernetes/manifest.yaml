@@ -28,26 +28,55 @@ spec:
     spec:
       serviceAccountName: blob-demo-sa
       containers:
-      - image: ghcr.io/christiantryti/storage-test:main
+      - image: mitmproxy/mitmproxy
+        name: mitmproxy
+        command:
+          - "mitmweb"
+        args:
+          - --web-host
+          - 0.0.0.0
+        volumeMounts:
+          - mountPath: /root/.mitmproxy
+            name: shared-certificate
+      - image: ghcr.io/christiantryti/storage-test:main@sha256:d92dc8a5fe6f70600380b1e1e466e8658886c006a967d739513ed99a5659471c
         imagePullPolicy: Always
         name: storage-test
         ports:
-          - containerPort: 8080
+          - containerPort: 8000
             name: http
             protocol: TCP
+        command:
+          - sh
+        args:
+          - -c
+          - |
+            cp /mitmproxy-cert/mitmproxy-ca-cert.pem /etc/ssl/certs/
+            /app/app
+        env:
+          - name: http_proxy
+            value: localhost:8080
+          - name: https_proxy
+            value: localhost:8080
+        volumeMounts:
+          - mountPath: /mitmproxy-cert
+            name: shared-certificate
+      volumes:
+        - name: shared-certificate
+          emptyDir:
+            {}
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
     app: storage-demo
-  name: storage-demo
+  name: mitmproxy
   namespace: demo
 spec:
   ports:
-    - port: 8080
+    - port: 8000
       protocol: TCP
-      targetPort: 8080
+      targetPort: 8000
   selector:
     app: storage-demo
 ---
@@ -66,7 +95,7 @@ spec:
               service:
                 name: storage-demo
                 port:
-                  number: 8080
+                  number: 8000
             path: /
             pathType: Exact
 ---

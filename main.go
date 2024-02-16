@@ -16,7 +16,7 @@ const (
 	url           = "https://anakinprodsademo.blob.core.windows.net"
 	containerName = "memes"
 	blobName      = "meme.jpg"
-	port          = ":8080"
+	port          = ":8000"
 )
 
 func main() {
